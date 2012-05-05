@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Shef interpreter</title>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<script type="text/javascript" src="chef.js"></script>
+<script>
+"use strict";
+
+function execute() 
+{
+	// Removing existing dishes.
+	var parent = document.getElementById('source').parentNode;
+	var oldElem = document.getElementById('output_list');
+	if (oldElem)
+	{
+		parent.removeChild(oldElem);
+	}
+
+	// Passing the recipe to Chef.
+	var elem = document.getElementById('source_text');
+	var result = [];
+	try {
+		result = run(elem.value);
+	} catch (e) {
+		alert(e);
+		return;
+	}
+
+	// Displaying the finished dishes
+	elem = document.createElement('div');
+	elem.id = 'output_list';
+	var html = '<h4>Here are the finished dishes:</h4>';
+	html += '<ol>';
+	for (var i = 0; i < result.length; i++)
+	{
+		html += '<li>';
+		html += result[i];
+		html += '</li>';
+	}
+	html += '</ol>';
+	elem.innerHTML = html;
+	parent.appendChild(elem);
+}
+</script>
+<style>
+#source_text
+{
+	width: 500px;
+	height: 500px;
+}
+#execute_button
+{
+	width: 100px;
+	height: 50px;
+}
+#output_list
+{
+	width: 500px;
+}
+</style>
+</head>
+<body>
+	<h4>Paste your recipe</h4>
+	<div id="source">
+	<p>The recipe needs to be written in <a href="http://www.dangermouse.net/esoteric/chef.html">Shef</a> language.</p>
+	<textarea id="source_text" cols="100" rows="50"></textarea>
+	<p><button id="execute_button" onclick="execute()">Cook</button></p>
+	</div>
+</body>
+</html>
